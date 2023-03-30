@@ -39,9 +39,8 @@ else{
 }
 
 const fetchImage = async (url) =>{
-  const responce = await axios.get(url);
-  const cards = await responce.json();
-  return cards;
+  const response = await axios.get(url);
+  return response;
 }
  
 fetchImage().then(cards => 
