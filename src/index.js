@@ -21,7 +21,7 @@ resetPage();
 e.preventDefault();
 clearContainer();
 searchQuerry = e.currentTarget.elements.searchQuery.value.trim();
-const url = `${BASE_URL}?key=${API_KEY}&q=${searchQuerry}&type=photo&orientation=horizontal&safesearch=true&per_page=100&page=${currentPage}`;
+const url = `${BASE_URL}?key=${API_KEY}&q=${searchQuerry}&type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${currentPage}`;
 if (searchQuerry === '') {
   refs.loadMoreBtn.classList.add('is-hidden');
   Notiflix.Notify.failure("Enter something.");
@@ -31,24 +31,68 @@ else{
     if (cards.total === 0) {
       refs.loadMoreBtn.classList.add('is-hidden');
       Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
-    } else{
-          refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
-          currentPage +=1;
-          refs.loadMoreBtn.classList.remove('is-hidden');
-          console.log(cards)
     }
-  }).catch((e) => {
+  })
+}
+}
+// Ось це працює, але чим відрізняється від закоментованого нижче?
+async function fetchImage(url){
+  try {
+    const response = await axios(url);
+    const cards = response.data;
+    refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
+    currentPage +=1;
+    refs.loadMoreBtn.classList.remove('is-hidden');
+    return cards;
+  } catch{
     refs.loadMoreBtn.classList.add('is-hidden');
     Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-    console.log(e)
-  });
   }
 }
 
-const fetchImage = async (url) =>{
-  const response = await axios.get(url);
-  return response;
-}
+
+// ============================================================================================
+// 1_Питання: Чому ось це працює тільки коли на 75 стрічці повертаємо не просто response, а response.data, 
+// звідки береться ця дата, але не працює кнопка loadmore????
+
+// function onSearch(e){
+// resetPage();
+// e.preventDefault();
+// clearContainer();
+// searchQuerry = e.currentTarget.elements.searchQuery.value.trim();
+// const url = `${BASE_URL}?key=${API_KEY}&q=${searchQuerry}&type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${currentPage}`;
+// if (searchQuerry === '') {
+//   refs.loadMoreBtn.classList.add('is-hidden');
+//   Notiflix.Notify.failure("Enter something.");
+// }
+// else{
+//   fetchImage(url).then(cards => {
+//     if (cards.total === 0) {
+//       refs.loadMoreBtn.classList.add('is-hidden');
+//       Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+//     }else{
+//     refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
+//     currentPage +=1;
+//     refs.loadMoreBtn.classList.remove('is-hidden');
+//     console.log(cards);
+//     }
+//   }).catch(()=>{
+//   refs.loadMoreBtn.classList.add('is-hidden');
+//   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+//   })
+//   }
+// }
+
+// const fetchImage = async (url) =>{
+//   const response = await axios.get(url);
+//   return response;
+// }
+// ==================================================================================================
+// 2_Питання: Чому ось це не працює???
+// const fetchImage = async (url) =>{
+//   const response = await axios.get(url);
+//   return response;
+// }
  
 // fetchImage().then(cards => 
 //   {
@@ -62,6 +106,9 @@ const fetchImage = async (url) =>{
 //   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
 // })
 
+// ========================================================================================
+
+// Без асинхронної функції - працює!!!
 // function fetchImage(url){
 //   return fetch(url)
 //   .then(response => response.json())
