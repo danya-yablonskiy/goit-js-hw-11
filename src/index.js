@@ -1,8 +1,16 @@
 import Notiflix from 'notiflix';
 import axios from 'axios';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
 const API_KEY = '34776135-c2da03be0c2ba8614e7d82d4c';
 const BASE_URL = 'https://pixabay.com/api/';
+
+const lightbox = new SimpleLightbox('.gallery a', { 
+  captionsData: 'alt',
+  captionDelay: 250,
+});
+
 
 const refs = {
     formEl: document.querySelector('#search-form'),
@@ -32,6 +40,9 @@ else{
       refs.loadMoreBtn.classList.add('is-hidden');
       Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
     }
+else{
+  Notiflix.Notify.success(`Hooray! We found ${cards.totalHits} images.`);
+}
   })
 }
 }
@@ -128,13 +139,14 @@ async function fetchImage(url){
 // }
 
 function onLoadMore(){
+  lightbox.refresh()
   const url = `${BASE_URL}?key=${API_KEY}&q=${searchQuerry}&type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${currentPage}`;
   fetchImage(url);
 }
 
 function renderCards(cards){
     return cards.hits.map(({webformatURL,largeImageURL,tags,likes,views,comments, downloads}) => {
-return `<div class="photo-card">
+return `<a class='gallery_link'><div class="photo-card">
 <img src="${webformatURL}" alt="${tags}" loading="lazy" width='360' height='260'/>
 <div class="info">
   <p class="info-item">
@@ -150,7 +162,7 @@ return `<div class="photo-card">
     <b>Downloads:${downloads}</b>
   </p>
 </div>
-</div>`
+</div></a>`
     }).join('')
 }
 
