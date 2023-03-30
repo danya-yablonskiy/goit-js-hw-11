@@ -31,11 +31,18 @@ else{
     if (cards.total === 0) {
       refs.loadMoreBtn.classList.add('is-hidden');
       Notiflix.Notify.failure("Sorry, there are no images matching your search query. Please try again.");
+    } else{
+          refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
+          currentPage +=1;
+          refs.loadMoreBtn.classList.remove('is-hidden');
+          console.log(cards)
     }
+  }).catch((e) => {
+    refs.loadMoreBtn.classList.add('is-hidden');
+    Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+    console.log(e)
   });
   }
-  
-
 }
 
 const fetchImage = async (url) =>{
@@ -43,17 +50,17 @@ const fetchImage = async (url) =>{
   return response;
 }
  
-fetchImage().then(cards => 
-  {
-    refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
-    currentPage +=1;
-    refs.loadMoreBtn.classList.remove('is-hidden');
-    console.log(cards)
-}
-).catch(() => {
-  refs.loadMoreBtn.classList.add('is-hidden');
-  Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
-})
+// fetchImage().then(cards => 
+//   {
+//     refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
+//     currentPage +=1;
+//     refs.loadMoreBtn.classList.remove('is-hidden');
+//     console.log(cards)
+// }
+// ).catch(() => {
+//   refs.loadMoreBtn.classList.add('is-hidden');
+//   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
+// })
 
 // function fetchImage(url){
 //   return fetch(url)
