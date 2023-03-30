@@ -38,8 +38,8 @@ else{
 
 }
 
-const fetchImage = async () =>{
-  const responce = await fetch(url);
+const fetchImage = async (url) =>{
+  const responce = await axios.get(url);
   const cards = await responce.json();
   return cards;
 }
@@ -51,7 +51,7 @@ fetchImage().then(cards =>
     refs.loadMoreBtn.classList.remove('is-hidden');
     console.log(cards)
 }
-)  .catch(() => {
+).catch(() => {
   refs.loadMoreBtn.classList.add('is-hidden');
   Notiflix.Notify.failure("We're sorry, but you've reached the end of search results.");
 })
@@ -108,3 +108,4 @@ function clearContainer(){
 function resetPage(){
   currentPage = 1;
 }
+
