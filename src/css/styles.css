@@ -70,3 +70,7 @@ display: none;
   gap:83px;
   flex-wrap: wrap;
 }
+
+.gallery__link{
+  text-decoration: none;
+}
