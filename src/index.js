@@ -146,8 +146,8 @@ function onLoadMore(){
 
 function renderCards(cards){
     return cards.hits.map(({webformatURL,largeImageURL,tags,likes,views,comments, downloads}) => {
-return `<a class='gallery_link'><div class="photo-card">
-<img src="${webformatURL}" alt="${tags}" loading="lazy" width='360' height='260'/>
+return `<div class="photo-card">
+<a class='gallery__link' href='${largeImageURL}'><img class='gallery__image' src="${webformatURL}" alt="${tags}" loading="lazy" width='360' height='260'/></a>
 <div class="info">
   <p class="info-item">
     <b>Likes:${likes}</b>
@@ -162,7 +162,7 @@ return `<a class='gallery_link'><div class="photo-card">
     <b>Downloads:${downloads}</b>
   </p>
 </div>
-</div></a>`
+</div>`
     }).join('')
 }
 
