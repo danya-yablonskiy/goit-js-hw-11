@@ -7,7 +7,6 @@ const API_KEY = '34776135-c2da03be0c2ba8614e7d82d4c';
 const BASE_URL = 'https://pixabay.com/api/';
 
 const lightbox = new SimpleLightbox('.gallery a', { 
-  captionsData: 'alt',
   captionDelay: 250,
 });
 
@@ -54,6 +53,7 @@ async function fetchImage(url){
     refs.cardEl.insertAdjacentHTML('beforeend', renderCards(cards));
     currentPage +=1;
     refs.loadMoreBtn.classList.remove('is-hidden');
+    lightbox.refresh();
     return cards;
   } catch{
     refs.loadMoreBtn.classList.add('is-hidden');
@@ -139,7 +139,6 @@ async function fetchImage(url){
 // }
 
 function onLoadMore(){
-  lightbox.refresh()
   const url = `${BASE_URL}?key=${API_KEY}&q=${searchQuerry}&type=photo&orientation=horizontal&safesearch=true&per_page=40&page=${currentPage}`;
   fetchImage(url);
 }
